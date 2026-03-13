@@ -68,7 +68,7 @@ conn.HandshakeHash()    // handshake hash, useful for channel binding
 
 ## CLI usage
 
-`icy` command is an encrypted netcat clone for testing and ad-hoc file transfer.:
+`icy` command is an encrypted netcat clone for testing and ad-hoc file transfer. Install it with:
 
 ```sh
 go install github.com/tetsuo/icy/cmd/icy@latest
@@ -84,13 +84,6 @@ Send some data:
 
 ```sh
 printf 'Hello, world!\n' | icy -v localhost 4242
-```
-
-```sh
-icy host port        connect to host:port
-icy -l port          listen for a connection
-icy -k -l port       listen, keep accepting connections
-icy -v ...           print key fingerprints and handshake hash
 ```
 
 Server outputs:
@@ -111,6 +104,15 @@ remote e5dd025706a01f7608081c62121d67c28abcea65c079711a216600c55cc4df4c
 hash   1eb97ba65a3508d312f67436ecc61e7971f1d290bc97bfa6b9e9c73cf2b195afeb9514669b176c212ee75a1837263c0abd5f41f42216749b31393738b664f4d7
 ```
 
+Other usage:
+
+```sh
+icy host port        connect to host:port
+icy -l port          listen for a connection
+icy -k -l port       listen, keep accepting connections
+icy -v ...           print key fingerprints and handshake hash
+```
+
 Pipe anything through it:
 
 ```sh
@@ -119,4 +121,16 @@ icy -l 9000 > file.bin
 
 # sender
 icy localhost 9000 < file.bin
+```
+
+Observe with `tcpdump`:
+
+```sh
+sudo tcpdump -i lo0 -n -s0 -X 'tcp port 9000'
+```
+
+or `tshark`:
+
+```sh
+sudo tshark -i lo0 -Y 'tcp.port==9000 and tcp.len>0' -T fields -e tcp.payload
 ```
