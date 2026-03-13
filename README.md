@@ -1,8 +1,10 @@
 # icy
 
-icy (I-See-You) provides encrypted channels for two-way communication. It performs a Noise handshake to establish symmetric keys, then encrypts all subsequent traffic using XChaCha20-Poly1305.
+icy (I-See-You) provides secure, authenticated streaming encryption. It uses a Noise handshake to establish symmetric keys, then encrypts all traffic with XChaCha20-Poly1305.
 
-```
+## Installation
+
+```sh
 go get github.com/tetsuo/icy
 ```
 
@@ -68,23 +70,23 @@ conn.HandshakeHash()    // handshake hash, useful for channel binding
 
 `icy` command is an encrypted netcat clone for testing and ad-hoc file transfer.:
 
-```
+```sh
 go install github.com/tetsuo/icy/cmd/icy@latest
 ```
 
 Start a server:
 
-```
+```sh
 icy -v -l 4242
 ```
 
 Send some data:
 
-```
+```sh
 printf 'Hello, world!\n' | icy -v localhost 4242
 ```
 
-```
+```sh
 icy host port        connect to host:port
 icy -l port          listen for a connection
 icy -k -l port       listen, keep accepting connections
